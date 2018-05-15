@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.springframework.stereotype.Component;
+
 /*
  * The class "UserTag" will be acting as the data model for the user_tag Table in the database. Please
  * note that this class is annotated with @Entity annotation. Hibernate will scan all package for 
@@ -21,14 +22,40 @@ import org.springframework.stereotype.Component;
  * Please note that you will have to use @Component annotation on this class if wish
  * to autowire the class from any other components of the application
  */
+@Entity
+@Component
 public class UserTag {
-	
+
 	/*
-	 * This class should have three fields
-	 * (userTagId,username,tag). Out of these three fields, the
-	 * field userTagId should be the primary key and should be generated. This class 
-	 * should also contain the getters and setters for the fields. 
+	 * This class should have three fields (userTagId,username,tag). Out of these
+	 * three fields, the field userTagId should be the primary key and should be
+	 * generated. This class should also contain the getters and setters for the
+	 * fields.
 	 */
-	
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int userTagId;
+	private String username;
+	private String tag;
+
+	public String getUserName() {
+		return username;
+	}
+
+	public void setUserName(String userName) {
+		this.username = userName;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	public int getUserTagId() {
+		return userTagId;
+	}
+
 }

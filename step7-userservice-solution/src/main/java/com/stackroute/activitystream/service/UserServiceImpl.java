@@ -2,6 +2,8 @@ package com.stackroute.activitystream.service;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,57 +20,105 @@ import com.stackroute.activitystream.repository.UserRepository;
 * future.
 * */
 
-public class UserServiceImpl implements UserService{
+@Service
+public class UserServiceImpl implements UserService {
 
 	/*
-	 * Autowiring should be implemented for the UserRepository.
-	 *  Please note that we should not create any object using the new keyword.
-	 * */
+	 * Autowiring should be implemented for the UserRepository. Please note that we
+	 * should not create any object using the new keyword.
+	 */
 	/*
-	 * This method should be used to save a new user. Call the corresponding method of Respository interface.
+	 * This method should be used to save a new user. Call the corresponding method
+	 * of Respository interface.
 	 * 
 	 */
-	public boolean save(User user) {
-		return false;
-	}
+	@Autowired
+	private UserRepository userRepo;
+
 	/*
-	 * This method should be used to update an existing user. Call the corresponding method of Respository interface.
-	 * 
-	 */
-	public boolean update(User user) {
-		return false;
+	 * * This method should be used to save a new user. Call the corresponding
+	 * method of Respository interface. *
+	 */ public boolean save(User user) {
+		try {
+			userRepo.save(user);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
+
 	/*
-	 * This method should be used to delete an existing user. Call the corresponding method of Respository interface.
-	 * 
-	 */
-	public boolean delete(User user) {
-		return false;
+	 * * This method should be used to update an existing user. Call the
+	 * corresponding method of Respository interface. *
+	 */ public boolean update(User user) {
+		try {
+			User usr = userRepo.findOne(user.getUsername());
+			if (usr != null) {
+				userRepo.save(user);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
+
 	/*
-	 * This method should be used to list all users. Call the corresponding method of Respository interface.
-	 * 
-	 */
-	public List<User> list() {
-		return null;
+	 * * This method should be used to delete an existing user. Call the
+	 * corresponding method of Respository interface. *
+	 */ public boolean delete(User user) {
+		try {
+			User usr = userRepo.findOne(user.getUsername());
+			if (usr != null) {
+				userRepo.delete(user);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
+
 	/*
-	 * This method should be used to validate a user using password. Call the corresponding method of Respository interface.
-	 * 
-	 */
-	public boolean validate(String username, String password) {
-		return false;
+	 * * This method should be used to list all users. Call the corresponding method
+	 * of Respository interface. *
+	 */ public List<User> list() {
+		return (List<User>) userRepo.findAll();
 	}
+
 	/*
-	 * This method should be used to get a user by username. Call the corresponding method of Respository interface.
-	 */
-	public User get(String username) {
-		return null;
+	 * * This method should be used to validate a user using password. Call the
+	 * corresponding method of Respository interface. *
+	 */ public boolean validate(String username, String password) {
+		boolean status = false;
+		User usr = userRepo.validate(username, password);
+		if (usr != null) {
+			status = true;
+		}
+		return status;
 	}
+
 	/*
-	 * This method is used to check whether a user with a specific username exists. Call the corresponding method of Respository interface.
-	 */
-	public boolean exists(String username) {
-		return false;
+	 * * This method should be used to get a user by username. Call the
+	 * corresponding method of Respository interface.
+	 */ public User get(String username) {
+		return userRepo.findOne(username);
+	}
+
+	/*
+	 * * This method is used to check whether a user with a specific username
+	 * exists. Call the corresponding method of Respository interface.
+	 */ public boolean exists(String username) {
+		boolean status = false;
+		User usr = get(username);
+		if (usr != null) {
+			status = true;
+		}
+		return status;
 	}
 }

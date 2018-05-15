@@ -11,7 +11,7 @@ import com.stackroute.activitystream.config.JwtFilter;
  * The @SpringBootApplication annotation is equivalent to using @Configuration, @EnableAutoConfiguration 
  * and @ComponentScan with their default attributes
  */
-
+@SpringBootApplication
 public class MessageServiceSpringBootApplication {
 
 	/*
@@ -21,17 +21,17 @@ public class MessageServiceSpringBootApplication {
 	 */
 	@Bean
 	public FilterRegistrationBean jwtFilter() {
-
-		return null;
+		final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+		registrationBean.setFilter(new JwtFilter());
+		registrationBean.addUrlPatterns("/api/message/*");
+		return registrationBean;
 	}
 
 	/*
-	 * 
-	 * You need to run SpringApplication.run, because this method start whole spring
-	 * framework. Code below integrates your main() with SpringBoot
-	 */
-
-	public static void main(String[] args) {
+	 * * * You need to run SpringApplication.run, because this method start whole
+	 * spring * framework. Code below integrates your main() with SpringBoot
+	 */ public static void main(String[] args) {
 		SpringApplication.run(MessageServiceSpringBootApplication.class, args);
 	}
+
 }

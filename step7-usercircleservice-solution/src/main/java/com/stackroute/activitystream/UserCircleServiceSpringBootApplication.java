@@ -12,6 +12,7 @@ import com.stackroute.activitystream.config.JwtFilter;
  * and @ComponentScan with their default attributes
  */
 
+@SpringBootApplication
 public class UserCircleServiceSpringBootApplication {
 
 	/*
@@ -21,17 +22,16 @@ public class UserCircleServiceSpringBootApplication {
 	 */
 	@Bean
 	public FilterRegistrationBean jwtFilter() {
-
-		return null;
+		final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+		registrationBean.setFilter(new JwtFilter());
+		registrationBean.addUrlPatterns("/api/userCircle/*");
+		return registrationBean;
 	}
 
 	/*
-	 * 
-	 * You need to run SpringApplication.run, because this method start whole spring
-	 * framework. Code below integrates your main() with SpringBoot
-	 */
-
-	public static void main(String[] args) {
+	 * * * You need to run SpringApplication.run, because this method start whole
+	 * spring * framework. Code below integrates your main() with SpringBoot
+	 */ public static void main(String[] args) {
 		SpringApplication.run(UserCircleServiceSpringBootApplication.class, args);
 	}
 }
