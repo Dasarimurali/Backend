@@ -25,11 +25,7 @@ import com.stackroute.activitystream.service.UserCircleService;
 @RestController
 @RequestMapping("/api/usercircle")
 public class UserCircleController {
-	/*
-	 * Autowiring should be implemented for the UserCircleService, UserCircle.
-	 * Please note that we should not create any object using the new keyword
-	 */
-
+	
 	@Autowired
 	private UserCircleService usrCirServce;
 
@@ -43,7 +39,8 @@ public class UserCircleController {
 	 * PUT method" 	 * where "
 	 * username" should be replaced by a valid username without {} 	 * and "
 	 * circleName" should be replaced by a valid circle name without {}
-	 */ @PutMapping(value = "/addToCircle/{username}/{circleName}")
+	 */ 
+	@PutMapping(value = "/addToCircle/{username}/{circleName}")
 	public ResponseEntity<?> subscribeUserToCircle(@PathVariable("username") String user,
 			@PathVariable("circleName") String circle) {
 		UserCircle userCir = usrCirServce.get(user, circle);
@@ -67,7 +64,8 @@ public class UserCircleController {
 	 * method" 	 * where "
 	 * username" should be replaced by a valid username without {} 	 * and "
 	 * circleName" should be replaced by a valid circle name without {}
-	 */ @PutMapping(value = "/removeFromCircle/{username}/{circleName}")
+	 */
+	 @PutMapping(value = "/removeFromCircle/{username}/{circleName}")
 	public ResponseEntity<?> removeUserFromCircle(@PathVariable("username") String user,
 			@PathVariable("circleName") String circle) {
 		boolean status = usrCirServce.removeUser(user, circle);
