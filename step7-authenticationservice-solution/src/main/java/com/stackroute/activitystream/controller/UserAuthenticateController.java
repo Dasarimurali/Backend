@@ -1,5 +1,7 @@
 package com.stackroute.activitystream.controller;
 
+
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +11,7 @@ import javax.servlet.ServletException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,41 +36,38 @@ import io.jsonwebtoken.SignatureAlgorithm;
  */
 
 @RestController
+@EnableWebMvc
+@CrossOrigin
 public class UserAuthenticateController {
-
+	static final long EXPIRATIONTIME = 300000;
 	Map<String, String> map = new HashMap<>();
 
 	/*
 	 * Autowiring should be implemented for the UserService. Please note that we
 	 * should not create any object using the new keyword
 	 */
-
 	@Autowired
-	private UserService userservice;
+	private UserService userService;
 
-	/*
-	 * Define a handler method which will authenticate a user by reading the
-	 * Serialized user object from request body containing the username and
-	 * password. The username and password should be validated before proceeding
-	 * ahead with JWT token generation. The user credentials will be validated
-	 * against the database entries. The error should be return if validation is not
-	 * successful. If credentials are validated successfully, then JWT token will be
-	 * generated. The token should be returned back to the caller along with the API
-	 * response. This handler method should return any one of the status messages
-	 * basis on different situations: 1. 200(OK) - If login is successful 2.
-	 * 401(UNAUTHORIZED) - If login is not successful
-	 * 
-	 * This handler method should map to the URL "/login1" using HTTP POST method
-	 */
+	@GetMapping("/")
+	public String serverStarted() {
+		return "Authentication server started";
+	}
+
+	
 
 	@PostMapping("login")
 	public ResponseEntity<?> login(@RequestBody User user) throws ServletException {
+
 		String jwtToken = "";
+
 		try {
+
 			jwtToken = getToken(user.getUsername(), user.getPassword());
 			map.clear();
 			map.put("message", "user successfully logged in");
 			map.put("token", jwtToken);
+			
 		} catch (Exception e) {
 			String exceptionMessage = e.getMessage();
 			map.clear();
@@ -79,17 +79,23 @@ public class UserAuthenticateController {
 	}
 
 	public String getToken(String username, String password) throws Exception {
+
 		String jwtToken = "";
+
 		if (username == null || password == null) {
 			throw new ServletException("Please fill in username and password");
 		}
-		boolean flag = userservice.validate(username, password);
+
+		boolean flag = userService.validate(username, password);
+
 		if (!flag) {
 			throw new ServletException("Invalid credentials.");
 		}
+
 		jwtToken = Jwts.builder().setSubject(username).setIssuedAt(new Date())
-				// .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
+				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
 				.signWith(SignatureAlgorithm.HS256, "secretkey").compact();
+
 		return jwtToken;
 
 	}

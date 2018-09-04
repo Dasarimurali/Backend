@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.stackroute.activitystream.model.User;
@@ -20,7 +21,8 @@ import com.stackroute.activitystream.repository.UserRepository;
 * future.
 * */
 
-@Service
+@Service("UserService")
+@Component
 public class UserServiceImpl implements UserService {
 
 	/*

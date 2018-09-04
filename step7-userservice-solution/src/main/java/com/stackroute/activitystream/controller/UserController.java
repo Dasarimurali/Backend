@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import com.stackroute.activitystream.service.UserService;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin
 public class UserController {
 
 	@Autowired
@@ -43,6 +45,7 @@ public class UserController {
 		return new ResponseEntity<List<User>>(usrService.list(), HttpStatus.OK);
 	}
 
+	 
 	/*
 	 * Define a handler method which will show details of a specific user. * This
 	 * handler method should return any one of the status messages basis on
@@ -71,7 +74,7 @@ public class UserController {
 	 * himself first before login. * This handler method should map to the URL
 	 * "/api/user" using HTTP POST method
 	 */ @PostMapping
-	public ResponseEntity<User> cerateUser(@RequestBody User user) {
+	public ResponseEntity<User> createUser(@RequestBody User user) {
 		User usr = usrService.get(user.getUsername());
 		if (usr != null) {
 			return new ResponseEntity<User>(HttpStatus.CONFLICT);

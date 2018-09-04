@@ -1,22 +1,17 @@
 package com.stackroute.activitystream.controller;
-
 import java.util.List;
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.stackroute.activitystream.model.Circle;
 import com.stackroute.activitystream.service.CircleService;
-
 /*
  * As in this assignment, we are working with creating RESTful web service, hence annotate
  * the class with @RestController annotation.A class annotated with @Controller annotation
@@ -27,8 +22,8 @@ import com.stackroute.activitystream.service.CircleService;
  */
 @RestController
 @RequestMapping("/api/circle")
+@CrossOrigin
 public class CircleController {
-
 	/*
 	 * From the problem statement, we can understand that the application	
 	 * requires us to implement two functionalities regarding circles. They are as following:
@@ -66,7 +61,6 @@ public class CircleController {
 	*/
 	@PostMapping
 	public ResponseEntity<Circle> createCircle(@RequestBody Circle circle) {
-
 		Circle c = circleService.get(circle.getCircleName());
 		
 		if (c != null) {
@@ -78,7 +72,6 @@ public class CircleController {
 		}
 		return new ResponseEntity<Circle>(circle, HttpStatus.CREATED);
 	}
-
 	
 	/* Define a handler method which will retrieve all the available circles.  
 	 * This handler method should return any one of the status messages basis on different
@@ -90,13 +83,9 @@ public class CircleController {
 	*/
 	@GetMapping
 	public ResponseEntity<List<Circle>> getAllCircles() {
-
 		return new ResponseEntity<List<Circle>>((List<Circle>) circleService.getAllCircles(), HttpStatus.OK);
-
 	}
-
 	
-
 	/* Define a handler method which will retrieve all the available circles matching a search keyword.  
 	 * This handler method should return any one of the status messages basis on different
 	 * situations:
@@ -108,9 +97,6 @@ public class CircleController {
 	*/
 	@GetMapping("/search/{searchString}")
 	public ResponseEntity<List<Circle>> getAllCircles(@PathVariable("searchString") String searchString) {
-
 		return new ResponseEntity<List<Circle>>(circleService.getAllCircles(searchString), HttpStatus.OK);
-
 	}
-
 }

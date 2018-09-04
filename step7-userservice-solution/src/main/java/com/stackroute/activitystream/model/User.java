@@ -17,12 +17,14 @@ import org.springframework.stereotype.Component;
  */
 @Entity
 @Component
+@Table(name="user")
 public class User {
 
 	@Id
 	private String username;
 	private String name;
 	private String password;
+
 
 	public User() {
 	}
@@ -32,7 +34,7 @@ public class User {
 		this.name = name;
 		this.password = password;
 	}
-
+	
 	public String getUsername() {
 		return username;
 	}
